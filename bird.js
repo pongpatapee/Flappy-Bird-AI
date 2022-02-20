@@ -13,7 +13,7 @@ class Bird {
     
     this.dead = false;
     this.score = 0;
-    this.lifetime = 0;
+    this.lifetime = 1;
     this.fitness = 0;
     
     if(brain){

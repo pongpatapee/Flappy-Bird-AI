@@ -10,6 +10,7 @@ let gameOver = false;
 let speedSlider;
 let updateCount = 0;
 let alive;
+const POPULATION = 50;
 
 function preload() {
   bgImg = loadImage('images/bg.png');
@@ -23,15 +24,19 @@ function preload() {
 
 function startGame(){
   pipes = [];
-  birds = [];
   score = 0;
   lifetime = 0;
   updateCount = 0;
   generation++;
-  let population = 5;
-  birds = [];
-  for(let i = 0; i < population; i++){
-    birds.push(new Bird());
+
+  if(generation <= 1){
+    birds = [];
+    for(let i = 0; i < POPULATION; i++){
+      birds.push(new Bird());
+    }
+    calcFitness();
+  } else {
+    birds = nextGeneration();
   }
   alive = birds.length; 
 }
@@ -92,6 +97,7 @@ function draw() {
           if(birds[i].hitPipe(pipes[j])){  //|| birds[i].hitFloor()
             birds[i].dead = true;
             alive--;
+            calcFitness();
             if(gameHasEnded()){
               startGame();
               break;
