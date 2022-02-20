@@ -1,5 +1,5 @@
 class Bird {
-  constructor(json){
+  constructor(brain){
     // this.x = x; 
     // this.y = y; 
     this.x = 30;
@@ -14,17 +14,15 @@ class Bird {
     this.dead = false;
     this.score = 0;
     this.lifetime = 0;
-  
-    this.init(json);
+    this.fitness = 0;
     
-  }
-  
-  init(json){
-    for(let i in json){
-      this[i] = json[i];
+    if(brain){
+      this.brain = brain.copy();
+    } else {
+      this.brain = new NeuralNetwork(4, 2, 2, null); 
     }
   }
-
+  
   update(){
     this.vel += this.grav;
     if(this.vel >= 10){

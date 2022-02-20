@@ -1,7 +1,6 @@
 let birds;
 let currGen;
-let generation;
-let Neuvol;
+let generation = 0;
 let pipes;
 let bgImg;
 let birdImgs;
@@ -22,29 +21,29 @@ function preload() {
   pipeTopImg = loadImage('images/pipe_top.png');
 }
 
+function startGame(){
+  pipes = [];
+  birds = [];
+  score = 0;
+  lifetime = 0;
+  updateCount = 0;
+  generation++;
+  let population = 5;
+  birds = [];
+  for(let i = 0; i < population; i++){
+    birds.push(new Bird());
+  }
+  alive = birds.length; 
+}
+
 function setup() {
   let canvas = createCanvas(400, 512);
   canvas.parent("canvasContainer");
   frameRate(60);
   speedSlider = createSlider(1, 10, 1, 1);
-
+  tf.setBackend('cpu');
   
-  pipes = [];
-  //4 inputs (bird.y, bird.vel, distance to top pipe, distance to bottom pipe)
-  let options = {
-    population: 3,
-    network:[2, [2], 1],
-  };
-  Neuvol = new Neuroevolution(options);
-  currGen = Neuvol.nextGeneration();
-  console.log(currGen);
-  generation = 1;
- 
-  birds = [];
-  for(let i in currGen){
-    birds.push(new Bird());
-  }
-  alive = birds.length; 
+  startGame();
 }
 
 function draw() {
@@ -52,7 +51,6 @@ function draw() {
   
   for(let k = 0; k < speedSlider.value(); k++){
     createPipe();
-    
     for(let i = pipes.length - 1; i >= 0; i--){
       pipes[i].update();
       pipes[i].show();
@@ -64,7 +62,6 @@ function draw() {
    let closestPipe = null;
     for(let j in pipes){
       if(!pipes[j].hasBirdPassed){
-        console.log(j);
         closestPipe = pipes[j];
         break;
       }
@@ -77,19 +74,16 @@ function draw() {
         birds[i].show();
         birds[i].lifetime++;
         
-        // let inputs = [
-        //   birds[i].y,
-        //   birds[i].vel,
-        //   closestPipe.y_bottom,
-        //   closestPipe.y_top
-        // ];
-        
+
+        // let inputs = [0.1, 0.2, 0.4, 0.6];
         let inputs = [
-          birds[i].y/height,
-          closestPipe.y_bottom/height,
+          birds[i].y / height,
+          birds[i].vel / height,
+          closestPipe.y_bottom / height,
+          closestPipe.y_top / height
         ];
-        let decision = currGen[i].compute(inputs);
-        if(decision > 0.5){
+        let decision = birds[i].brain.predict(inputs);
+        if(decision[0] > decision[1]){
           birds[i].flap();
         }
         
@@ -98,10 +92,8 @@ function draw() {
           if(birds[i].hitPipe(pipes[j])){  //|| birds[i].hitFloor()
             birds[i].dead = true;
             alive--;
-            
-            Neuvol.networkScore(currGen[i], birds[i].lifetime);
             if(gameHasEnded()){
-              restartGame();
+              startGame();
               break;
             }
             
@@ -146,24 +138,6 @@ function createPipe() {
   updateCount = (updateCount + 1) % rate;
 }
 
-function restartGame(){
-  // gameOver = false;
-  score = 0;
-  lifetime = 0;
-  pipes = [];
-  // pipes.push(new Pipe(width));
-  updateCount = 0;
-  
-  // currGen = Neuvol.nextGeneration();
-  generation++;
- 
-  birds = [];
-  for(let i in currGen){
-    birds.push(new Bird());
-  }
-  
-  alive = birds.length; 
-}
 
 function getBestScore(){
   for(let bird of birds){
@@ -173,10 +147,5 @@ function getBestScore(){
 }
 
 function gameHasEnded(){
-  for(let i in birds){
-    if(!birds[i].dead){
-      return false;
-    }
-    return true;
-  }
+  return !(alive > 0);
 }
