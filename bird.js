@@ -12,6 +12,8 @@ class Bird {
     this.imgInd = 0;
     
     this.dead = false;
+    this.score = 0;
+    this.lifetime = 0;
   
     this.init(json);
     
@@ -65,7 +67,7 @@ class Bird {
   flap(){
     let upForce = 15;
     this.vel -= upForce;
-    console.log('flap flap');
+    // console.log('flap flap');
   }
   
   hitPipe(pipe){
@@ -80,6 +82,14 @@ class Bird {
     }
     return false;
   }
-
+  
+  hitFloor(){
+    let bottomY = floor(this.y + this.size[1]);
+    
+    if(bottomY >= height){
+      return true;
+    }
+    return false;
+  }
   
 }

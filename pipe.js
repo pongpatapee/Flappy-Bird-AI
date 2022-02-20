@@ -3,6 +3,8 @@ class Pipe{
     this.x = x;
     this.gap = 130;
     
+    this.y_top;
+    this.y_bottom;
     this.initHeight();
     
     this.size = [52, 320];
