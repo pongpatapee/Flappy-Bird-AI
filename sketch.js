@@ -23,22 +23,25 @@ function preload() {
 }
 
 function startGame(){
-  pipes = [];
-  score = 0;
-  lifetime = 0;
-  updateCount = 0;
-  generation++;
+  tf.tidy(()=>{
+    pipes = [];
+    score = 0;
+    lifetime = 0;
+    updateCount = 0;
+    generation++;
 
-  if(generation <= 1){
-    birds = [];
-    for(let i = 0; i < POPULATION; i++){
-      birds.push(new Bird());
+    if(generation <= 1){
+      birds = [];
+      for(let i = 0; i < POPULATION; i++){
+        birds.push(new Bird());
+      } 
+      calcFitness();
+    } else {
+      birds = nextGeneration();
     }
-    calcFitness();
-  } else {
-    birds = nextGeneration();
-  }
-  alive = birds.length; 
+    alive = birds.length; 
+
+  });
 }
 
 function setup() {

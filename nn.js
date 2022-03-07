@@ -10,7 +10,7 @@ class NeuralNetwork{
             this.model.setWeights(weights);
         }
     }
-
+    
     createModel(){
         return tf.tidy(()=>{
 
@@ -101,6 +101,8 @@ class NeuralNetwork{
         this.model.setWeights(mutatedWeights);
         });
     }
+
+    
     dispose(){
         this.model.dispose();
     }
