@@ -30,10 +30,9 @@ class NeuralNetwork{
             }));
             
             const learningRate = 0.01;
-            const optimizer = tf.train.sgd(learningRate);
             model.compile({
                 loss: 'meanSquaredError',
-                optimizer: optimizer
+                optimizer: 'sgd'
             });
             return model;
         });

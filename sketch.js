@@ -39,6 +39,7 @@ function startGame(){
     } else {
       birds = nextGeneration();
     }
+    console.log(tf.memory());
     alive = birds.length; 
 
   });

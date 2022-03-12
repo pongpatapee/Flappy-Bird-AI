@@ -48,9 +48,7 @@ function nextGeneration(){
         for(let bird of birds){
             bird.brain.dispose();
         }
-
-        noLoop();
-
+        
         return newBirds;
 
     });
