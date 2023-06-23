@@ -43,8 +43,8 @@ function draw() {
     birdPop.checkHit(pipes.getClosestPipe());
     birdPop.showVision(pipes.getClosestPipe());
 
-    if (birdPop.population > currGen) {
-      currGen = birdPop.population;
+    if (birdPop.generation > currGen) {
+      currGen = birdPop.generation;
       pipes.reset();
     }
   }
