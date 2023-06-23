@@ -19,17 +19,16 @@ class PipesContainer {
   }
 
   update() {
-    // console.log(this.pipes);
     for (let i = this.pipes.length - 1; i >= 0; i--) {
       let pipe = this.pipes[i];
 
       pipe.update();
 
       if (pipe.isOffScreen()) {
-        let offPipe = this.pipes.shift();
-        offPipe.x = this.getLastPipe() + this.horizontalGap;
-        offPipe.randomHeight();
-        this.pipes.push(offPipe);
+        this.pipes.shift();
+
+        let new_x_pos = this.getLastPipe().x + this.horizontalGap;
+        this.pipes.push(new Pipe(new_x_pos));
       }
     }
   }
