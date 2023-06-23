@@ -9,7 +9,7 @@ class Bird {
 
     this.useBrain = controlType == "AI";
     if (controlType === "AI") {
-      this.brain = new NeuralNetwork();
+      this.brain = new NeuralNetwork(4, 6, 1);
     }
 
     this.dead = false;
@@ -19,7 +19,7 @@ class Bird {
   }
 
   static getXPos() {
-    return this.x;
+    return 50 + assets.birdImgs[0].width;
   }
 
   update() {
@@ -35,6 +35,7 @@ class Bird {
       this.vel = -MAX_UP_VEL;
     }
     this.y += this.vel;
+    this.lifetime++;
 
     //limit sky and ground
     if (this.y < SKY_LIMIT) {
@@ -63,6 +64,19 @@ class Bird {
     this.vel -= upForce;
   }
 
+  think(closestPipe) {
+    let shouldFlap = this.brain.feedForward([
+      this.x,
+      this.y,
+      closestPipe.x,
+      closestPipe.y_top,
+    ]);
+
+    if (shouldFlap[0] > 0.5) {
+      this.flap();
+    }
+  }
+
   hitPipe(pipe) {
     let centerX = floor(this.x + this.size.x / 2);
     let bottomY = floor(this.y + this.size.y);
@@ -89,5 +103,18 @@ class Bird {
     strokeWeight(1);
     line(this.x + this.size.x, this.y, pipe.x, pipe.y_top);
     line(this.x + this.size.x, this.y, pipe.x, pipe.y_bottom);
+  }
+
+  //genetic algo stuff
+  crossOver(partner) {
+    let child = new Bird("AI");
+
+    child.brain.mix(this.brain, partner.brain);
+
+    return child;
+  }
+
+  mutate(mutationRate) {
+    this.brain.mutate(mutationRate);
   }
 }

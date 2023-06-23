@@ -3,6 +3,7 @@ let birdPop;
 let speedSlider;
 let speedSliderText;
 let pipes;
+let currGen;
 
 function preload() {
   assets.bgImg = loadImage("images/bg.png");
@@ -21,8 +22,9 @@ function setup() {
   speedSliderText = createP(`Time: ${speedSlider.value()}x`);
 
   const mutationRate = 0.01;
-  const maxPop = 1;
+  const maxPop = 10;
   birdPop = new Population(mutationRate, maxPop);
+  currGen = birdPop.generation;
 
   const numPipes = 5;
   pipes = new PipesContainer(numPipes);
@@ -37,8 +39,14 @@ function draw() {
 
     birdPop.show();
     birdPop.update();
+    birdPop.think(pipes.getClosestPipe());
     birdPop.checkHit(pipes.getClosestPipe());
     birdPop.showVision(pipes.getClosestPipe());
+
+    if (birdPop.population > currGen) {
+      currGen = birdPop.population;
+      pipes.reset();
+    }
   }
 }
 
@@ -46,8 +54,8 @@ function drawBackground() {
   image(assets.bgImg, 0, 0, width, height);
 }
 
-function keyPressed() {
-  if (keyCode === 32) {
-    birdPop.population.forEach((bird) => bird.flap());
-  }
-}
+// function keyPressed() {
+//   if (keyCode === 32) {
+//     birdPop.population.forEach((bird) => bird.flap());
+//   }
+// }

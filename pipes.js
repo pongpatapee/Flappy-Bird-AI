@@ -1,5 +1,6 @@
 class PipesContainer {
   constructor(numPipes) {
+    this.numPipes = numPipes;
     this.horizontalGap = 180;
     this.pipes = [];
 
@@ -23,17 +24,6 @@ class PipesContainer {
     }
   }
 
-  // checkHit(birdPop) {
-  //   let birds = birdPop.population;
-  //   let closestPipe = this.getClosestPipe();
-  //
-  //   for (let i = 0; i < birds.length; i++) {
-  //     if (birds[i].hitPipe(closestPipe)) {
-  //       birds[i].dead = true;
-  //     }
-  //   }
-  // }
-
   show() {
     this.pipes.forEach((pipe) => {
       pipe.show();
@@ -54,4 +44,6 @@ class PipesContainer {
       }
     }
   }
+
+  reset() {}
 }

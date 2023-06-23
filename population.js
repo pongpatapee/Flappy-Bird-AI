@@ -8,8 +8,10 @@ class Population {
 
     this.population = [];
     for (let i = 0; i < maxPop; i++) {
-      this.population.push(new Bird("KEY"));
+      this.population.push(new Bird("AI"));
     }
+
+    this.numAlive = maxPop;
 
     this.matingPool = [];
     this.calcFitness();
@@ -25,31 +27,115 @@ class Population {
     this.population.forEach((bird) => {
       if (bird.hitPipe(closestPipe) || bird.hitFloor()) {
         bird.dead = true;
+        this.numAlive--;
       }
     });
   }
 
-  generateNewPop() {}
+  generateNewPop() {
+    for (let i = 0; i < this.population.length; i++) {
+      let a = floor(random(this.matingPool.length));
+      let b = floor(random(this.matingPool.length));
 
-  calcFitness() {}
+      let partnerA = this.matingPool[a];
+      let partnerB = this.matingPool[b];
 
-  naturalSelection() {}
+      let child = partnerA.crossOver(partnerB);
+      child.mutate(this.mutationRate);
+      this.population[i] = child;
+    }
 
-  evalutate() {}
+    this.numAlive = this.maxPop;
+    this.generation++;
+  }
 
-  getAvgFitness() {}
+  calcFitness() {
+    let totalLifeTime = 1;
+    for (let i = 0; i < this.population.length; i++) {
+      totalLifeTime = this.population[i].lifetime;
+    }
 
-  getBest() {}
+    this.population.forEach((bird) => {
+      bird.fitness = bird.lifetime / totalLifeTime;
+    });
+  }
+
+  naturalSelection() {
+    this.matingPool = [];
+
+    let maxFitness = 0;
+    this.population.forEach((bird) => {
+      maxFitness = max(bird.fitness, maxFitness);
+    });
+
+    for (let i = 0; i < this.population.length; i++) {
+      let fitness = map(this.population[i].fitness, 0, maxFitness, 0, 1);
+      let n = floor(fitness * 100); // Arbitrary multiplier
+
+      for (let j = 0; j < n; j++) {
+        this.matingPool.push(this.population[i]);
+      }
+    }
+  }
+
+  evaluate() {
+    let bestFitness = 0;
+    let bestBirdInd = 0;
+
+    this.population.forEach((bird, ind) => {
+      if (bird.fitness > bestFitness) {
+        bestFitness = bird.fitness;
+        bestBirdInd = ind;
+      }
+    });
+
+    this.best = this.population[bestBirdInd];
+  }
+
+  getAvgFitness() {
+    let totalFitness = 0;
+    this.population.forEach((bird) => {
+      totalFitness += bird.fitness;
+    });
+    return totalFitness / this.population.length;
+  }
+
+  getBest() {
+    if (!this.best) {
+      this.evaluate();
+    }
+
+    return this.best;
+  }
+
+  think(closestPipe) {
+    this.population.forEach((bird) => {
+      if (!bird.dead) {
+        bird.think(closestPipe);
+      }
+    });
+  }
 
   show() {
     this.population.forEach((bird) => {
-      bird.show();
+      if (!bird.dead) {
+        bird.show();
+      }
     });
   }
 
   update() {
     this.population.forEach((bird) => {
-      bird.update();
+      if (!bird.dead) {
+        bird.update();
+      }
     });
+
+    if (this.numAlive <= 0) {
+      this.calcFitness();
+      this.naturalSelection();
+      this.generateNewPop();
+      this.evaluate();
+    }
   }
 }
