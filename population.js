@@ -15,6 +15,12 @@ class Population {
     this.calcFitness();
   }
 
+  showVision(pipe) {
+    this.population.forEach((bird) => {
+      bird.drawVision(pipe);
+    });
+  }
+
   generateNewPop() {}
 
   calcFitness() {}

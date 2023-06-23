@@ -12,6 +12,17 @@ class PipesContainer {
     return this.pipes[this.pipes.length - 1];
   }
 
+  getClosestPipe() {
+    for (let i = 0; i < this.pipes.length; i++) {
+      let hasPassedBird =
+        this.pipes[i].x + this.pipes[i].size.x < Bird.getXPos();
+
+      if (hasPassedBird) continue;
+
+      return this.pipes[i];
+    }
+  }
+
   show() {
     this.pipes.forEach((pipe) => {
       pipe.show();

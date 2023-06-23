@@ -37,6 +37,7 @@ function draw() {
 
     pipes.show();
     pipes.update();
+    birdPop.showVision(pipes.getClosestPipe());
   }
 }
 

@@ -18,6 +18,10 @@ class Bird {
     this.fitness = 0;
   }
 
+  static getXPos() {
+    return this.x;
+  }
+
   update() {
     const GRAV = 0.5;
     const MAX_DOWN_VEL = 10;
@@ -78,5 +82,12 @@ class Bird {
       return true;
     }
     return false;
+  }
+
+  drawVision(pipe) {
+    stroke(0);
+    strokeWeight(1);
+    line(this.x + this.size.x, this.y, pipe.x, pipe.y_top);
+    line(this.x + this.size.x, this.y, pipe.x, pipe.y_bottom);
   }
 }
