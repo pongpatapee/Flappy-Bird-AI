@@ -46,7 +46,6 @@ class PipesContainer {
   }
 
   reset() {
-    console.log("resetting pipes");
     this.pipes = [];
     for (let i = 0; i < this.numPipes; i++) {
       this.pipes.push(new Pipe(width + i * this.horizontalGap));

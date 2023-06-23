@@ -21,8 +21,8 @@ function setup() {
   speedSlider = createSlider(1, 10, 1, 1);
   speedSliderText = createP(`Time: ${speedSlider.value()}x`);
 
-  const mutationRate = 0.01;
-  const maxPop = 10;
+  const mutationRate = 0.05;
+  const maxPop = 50;
   birdPop = new Population(mutationRate, maxPop);
   currGen = birdPop.generation;
 
@@ -41,17 +41,27 @@ function draw() {
     birdPop.update();
     birdPop.think(pipes.getClosestPipe());
     birdPop.checkHit(pipes.getClosestPipe());
-    birdPop.showVision(pipes.getClosestPipe());
+    // birdPop.showVision(pipes.getClosestPipe());
 
     if (birdPop.generation > currGen) {
       currGen = birdPop.generation;
       pipes.reset();
     }
   }
+  showStats();
 }
 
 function drawBackground() {
   image(assets.bgImg, 0, 0, width, height);
+}
+
+function showStats() {
+  textSize(16);
+  fill(255);
+  text(`Generation: ${birdPop.generation}`, 30, 30);
+  text(`Alive: ${birdPop.numAlive} / ${birdPop.maxPop}`, 30, 50);
+  text(`Best score ${birdPop.maxLifetime}`, 30, 70);
+  text(`Current Best ${birdPop.getBest().lifetime}`, 30, 90);
 }
 
 // function keyPressed() {

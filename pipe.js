@@ -18,8 +18,8 @@ class Pipe {
 
   show() {
     fill(150);
-    circle(this.x, this.y_top, 8);
-    circle(this.x, this.y_bottom, 8);
+    // circle(this.x, this.y_top, 8);
+    // circle(this.x, this.y_bottom, 8);
     //bottom pipe
     image(assets.pipeBotImg, this.x, this.y_bottom);
 

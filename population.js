@@ -15,6 +15,8 @@ class Population {
 
     this.matingPool = [];
     this.calcFitness();
+    this.maxFitness = 0;
+    this.maxLifetime = 0;
   }
 
   showVision(pipe) {
@@ -27,7 +29,6 @@ class Population {
     this.population.forEach((bird) => {
       if (bird.hitPipe(closestPipe) || bird.hitFloor()) {
         bird.dead = true;
-        this.numAlive--;
       }
     });
   }
@@ -52,11 +53,13 @@ class Population {
   calcFitness() {
     let totalLifeTime = 1;
     for (let i = 0; i < this.population.length; i++) {
-      totalLifeTime = this.population[i].lifetime;
+      totalLifeTime += this.population[i].lifetime;
     }
 
     this.population.forEach((bird) => {
       bird.fitness = bird.lifetime / totalLifeTime;
+      this.maxFitness = max(bird.fitness, this.maxFitness);
+      this.maxLifetime = max(bird.lifetime, this.maxLifetime);
     });
   }
 
@@ -66,11 +69,12 @@ class Population {
     let maxFitness = 0;
     this.population.forEach((bird) => {
       maxFitness = max(bird.fitness, maxFitness);
+      console.log(`maxFitness of this generation is: ${maxFitness}`);
     });
 
     for (let i = 0; i < this.population.length; i++) {
       let fitness = map(this.population[i].fitness, 0, maxFitness, 0, 1);
-      let n = floor(fitness * 100); // Arbitrary multiplier
+      let n = floor(fitness * 10); // Arbitrary multiplier
 
       for (let j = 0; j < n; j++) {
         this.matingPool.push(this.population[i]);
@@ -131,11 +135,18 @@ class Population {
       }
     });
 
+    this.numAlive = 0;
+    for (let i = 0; i < this.population.length; i++) {
+      if (!this.population[i].dead) {
+        this.numAlive++;
+      }
+    }
+
     if (this.numAlive <= 0) {
       this.calcFitness();
       this.naturalSelection();
       this.generateNewPop();
-      this.evaluate();
     }
+    this.evaluate();
   }
 }

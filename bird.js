@@ -72,6 +72,9 @@ class Bird {
       closestPipe.y_top,
     ]);
 
+    // console.log(`should flap val`);
+    // console.log(shouldFlap);
+
     if (shouldFlap[0] > 0.5) {
       this.flap();
     }
