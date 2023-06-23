@@ -21,6 +21,14 @@ class Population {
     });
   }
 
+  checkHit(closestPipe) {
+    this.population.forEach((bird) => {
+      if (bird.hitPipe(closestPipe) || bird.hitFloor()) {
+        bird.dead = true;
+      }
+    });
+  }
+
   generateNewPop() {}
 
   calcFitness() {}

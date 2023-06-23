@@ -32,11 +32,12 @@ function draw() {
   drawBackground();
   speedSliderText.html(`Time: ${speedSlider.value()}x`);
   for (let k = 0; k < speedSlider.value(); k++) {
-    birdPop.show();
-    birdPop.update();
-
     pipes.show();
     pipes.update();
+
+    birdPop.show();
+    birdPop.update();
+    birdPop.checkHit(pipes.getClosestPipe());
     birdPop.showVision(pipes.getClosestPipe());
   }
 }

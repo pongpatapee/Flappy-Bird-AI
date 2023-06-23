@@ -23,6 +23,17 @@ class PipesContainer {
     }
   }
 
+  // checkHit(birdPop) {
+  //   let birds = birdPop.population;
+  //   let closestPipe = this.getClosestPipe();
+  //
+  //   for (let i = 0; i < birds.length; i++) {
+  //     if (birds[i].hitPipe(closestPipe)) {
+  //       birds[i].dead = true;
+  //     }
+  //   }
+  // }
+
   show() {
     this.pipes.forEach((pipe) => {
       pipe.show();
