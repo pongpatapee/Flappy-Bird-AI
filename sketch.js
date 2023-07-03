@@ -21,7 +21,7 @@ function setup() {
   speedSlider = createSlider(1, 10, 1, 1);
   speedSliderText = createP(`Time: ${speedSlider.value()}x`);
 
-  const mutationRate = 0.05;
+  const mutationRate = 0.1;
   const maxPop = 50;
   birdPop = new Population(mutationRate, maxPop);
   currGen = birdPop.generation;

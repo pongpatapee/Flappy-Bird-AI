@@ -27,6 +27,8 @@ class Population {
 
   checkHit(closestPipe) {
     this.population.forEach((bird) => {
+      if (bird.dead) return;
+
       if (bird.hitPipe(closestPipe) || bird.hitFloor()) {
         bird.dead = true;
       }
@@ -34,7 +36,8 @@ class Population {
   }
 
   generateNewPop() {
-    for (let i = 0; i < this.population.length; i++) {
+    this.population = [];
+    for (let i = 0; i < this.maxPop; i++) {
       let a = floor(random(this.matingPool.length));
       let b = floor(random(this.matingPool.length));
 
@@ -51,7 +54,7 @@ class Population {
   }
 
   calcFitness() {
-    let totalLifeTime = 1;
+    let totalLifeTime = 0;
     for (let i = 0; i < this.population.length; i++) {
       totalLifeTime += this.population[i].lifetime;
     }

@@ -65,11 +65,14 @@ class NeuralNetwork {
     for (let i = 0; i < weightA.length; i++) {
       weights[i] = new Array(weightA[i].length);
       for (let j = 0; j < weightA[i].length; j++) {
-        if (Math.random() * 2 - 1 < 0.5) {
-          weights[i][j] = weightA[i][j];
-        } else {
-          weights[i][j] = weightB[i][j];
-        }
+        // if (Math.random() * 2 - 1 < 0.5) {
+        //   weights[i][j] = weightA[i][j];
+        // } else {
+        //   weights[i][j] = weightB[i][j];
+        // }
+        const randomWeight = Math.random();
+        weights[i][j] =
+          randomWeight * weightA[i][j] + (1 - randomWeight) * weightB[i][j];
       }
     }
 
@@ -80,11 +83,14 @@ class NeuralNetwork {
     const bias = new Array(biasA.length);
 
     for (let i = 0; i < biasA.length; i++) {
-      if (Math.random() * 2 - 1 <= 0.5) {
-        bias[i] = biasA[i];
-      } else {
-        bias[i] = biasB[i];
-      }
+      // if (Math.random() * 2 - 1 <= 0.5) {
+      //   bias[i] = biasA[i];
+      // } else {
+      //   bias[i] = biasB[i];
+      // }
+
+      const randomWeight = Math.random();
+      bias[i] = randomWeight * biasA[i] + (1 - randomWeight) * biasB[i];
     }
 
     return bias;

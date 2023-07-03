@@ -26,7 +26,7 @@ class Bird {
     const GRAV = 0.5;
     const MAX_DOWN_VEL = 10;
     const MAX_UP_VEL = 15;
-    const SKY_LIMIT = -30;
+    const SKY_LIMIT = 0;
 
     this.vel += GRAV;
     if (this.vel >= MAX_DOWN_VEL) {
@@ -66,10 +66,10 @@ class Bird {
 
   think(closestPipe) {
     let shouldFlap = this.brain.feedForward([
-      this.x,
-      this.y,
-      closestPipe.x,
-      closestPipe.y_top,
+      this.y / height,
+      closestPipe.x / width,
+      closestPipe.y_top / height,
+      closestPipe.y_bottom / height,
     ]);
 
     // console.log(`should flap val`);
