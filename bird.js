@@ -123,4 +123,11 @@ class Bird {
   mutate(mutationRate) {
     this.brain.mutate(mutationRate);
   }
+
+  copy() {
+    let newBird = new Bird("AI");
+    newBird.brain = this.brain.copy();
+
+    return newBird;
+  }
 }

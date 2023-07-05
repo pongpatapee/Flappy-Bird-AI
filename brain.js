@@ -34,6 +34,35 @@ class NeuralNetwork {
     return biases;
   }
 
+  copy() {
+    const network = new NeuralNetwork(
+      this.inputLayerSize,
+      this.hiddenLayerSize,
+      this.outputLayerSize
+    );
+
+    this.copyWeights(this.weights1, network.weights1);
+    this.copyWeights(this.weights2, network.weights2);
+    this.copyBiases(this.weights1, network.weights1);
+    this.copyBiases(this.weights2, network.weights2);
+
+    return network;
+  }
+
+  copyWeights(from, to) {
+    for (let i = 0; i < from.length; i++) {
+      for (let j = 0; j < from[i].length; j++) {
+        to[i][j] = from[i][j];
+      }
+    }
+  }
+
+  copyBiases(from, to) {
+    for (let i = 0; i < from.length; i++) {
+      to[i] = from[i];
+    }
+  }
+
   // mutateWeight(weights) {
   mutateWeight(weights, mutationRate) {
     for (let i = 0; i < weights.length; i++) {

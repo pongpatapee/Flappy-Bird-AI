@@ -41,13 +41,8 @@ class Population {
   generateNewPop() {
     this.population = [];
     for (let i = 0; i < this.maxPop; i++) {
-      let a = floor(random(this.matingPool.length));
-      let b = floor(random(this.matingPool.length));
+      let child = this.best.copy();
 
-      let partnerA = this.matingPool[a];
-      let partnerB = this.matingPool[b];
-
-      let child = partnerA.crossOver(partnerB);
       child.mutate(this.mutationRate);
       this.population[i] = child;
     }
@@ -70,25 +65,26 @@ class Population {
   }
 
   naturalSelection() {
-    this.matingPool = [];
-
-    let maxFitness = 0;
-    this.population.forEach((bird) => {
-      maxFitness = max(bird.fitness, maxFitness);
-    });
-    // console.log(`maxFitness of this generation is: ${maxFitness}`);
-
-    for (let i = 0; i < this.population.length; i++) {
-      let fitness = map(this.population[i].fitness, 0, maxFitness, 0, 1);
-      let n = floor(fitness * 100); // Arbitrary multiplier
-
-      for (let j = 0; j < n; j++) {
-        this.matingPool.push(this.population[i]);
-      }
-      // console.log(
-      //   `bird ${i}, fitness ${this.population[i].fitness} pushed ${n} times`
-      // );
-    }
+    // this.matingPool = [];
+    //
+    // let maxFitness = 0;
+    // this.population.forEach((bird) => {
+    //   maxFitness = max(bird.fitness, maxFitness);
+    // });
+    // // console.log(`maxFitness of this generation is: ${maxFitness}`);
+    //
+    // for (let i = 0; i < this.population.length; i++) {
+    //   let fitness = map(this.population[i].fitness, 0, maxFitness, 0, 1);
+    //   let n = floor(fitness * 100); // Arbitrary multiplier
+    //
+    //   for (let j = 0; j < n; j++) {
+    //     this.matingPool.push(this.population[i]);
+    //   }
+    //   // console.log(
+    //   //   `bird ${i}, fitness ${this.population[i].fitness} pushed ${n} times`
+    //   // );
+    // }
+    this.evaluate(); // just define best bird to copy from
   }
 
   evaluate() {

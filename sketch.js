@@ -21,8 +21,8 @@ function setup() {
   speedSlider = createSlider(1, 10, 1, 1);
   speedSliderText = createP(`Time: ${speedSlider.value()}x`);
 
-  const mutationRate = 0.3;
-  const maxPop = 50;
+  const mutationRate = 0.1;
+  const maxPop = 100;
   birdPop = new Population(mutationRate, maxPop);
   currGen = birdPop.generation;
 
@@ -58,10 +58,12 @@ function drawBackground() {
 function showStats() {
   textSize(16);
   fill(255);
+  let bestBird = birdPop.getBest();
+  let bestScore = max(birdPop.maxLifetime, bestBird.lifetime);
   text(`Generation: ${birdPop.generation}`, 30, 30);
   text(`Alive: ${birdPop.numAlive} / ${birdPop.maxPop}`, 30, 50);
-  text(`Best score ${birdPop.maxLifetime}`, 30, 70);
-  text(`Current Best ${birdPop.getBest().lifetime}`, 30, 90);
+  text(`Best score ${bestScore}`, 30, 70);
+  text(`Current Best ${bestBird.lifetime}`, 30, 90);
 }
 
 // function keyPressed() {
