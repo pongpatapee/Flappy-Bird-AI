@@ -21,6 +21,9 @@ class Population {
 
   showVision(pipe) {
     this.population.forEach((bird) => {
+      if (bird.dead) {
+        return;
+      }
       bird.drawVision(pipe);
     });
   }
@@ -72,26 +75,29 @@ class Population {
     let maxFitness = 0;
     this.population.forEach((bird) => {
       maxFitness = max(bird.fitness, maxFitness);
-      console.log(`maxFitness of this generation is: ${maxFitness}`);
     });
+    // console.log(`maxFitness of this generation is: ${maxFitness}`);
 
     for (let i = 0; i < this.population.length; i++) {
       let fitness = map(this.population[i].fitness, 0, maxFitness, 0, 1);
-      let n = floor(fitness * 10); // Arbitrary multiplier
+      let n = floor(fitness * 100); // Arbitrary multiplier
 
       for (let j = 0; j < n; j++) {
         this.matingPool.push(this.population[i]);
       }
+      // console.log(
+      //   `bird ${i}, fitness ${this.population[i].fitness} pushed ${n} times`
+      // );
     }
   }
 
   evaluate() {
-    let bestFitness = 0;
+    let bestLifetime = 0;
     let bestBirdInd = 0;
 
     this.population.forEach((bird, ind) => {
-      if (bird.fitness > bestFitness) {
-        bestFitness = bird.fitness;
+      if (bird.lifetime > bestLifetime) {
+        bestLifetime = bird.lifetime;
         bestBirdInd = ind;
       }
     });

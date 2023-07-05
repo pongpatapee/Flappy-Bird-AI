@@ -1,3 +1,5 @@
+ID = 0;
+
 class Bird {
   constructor(controlType) {
     this.x = 50;
@@ -9,13 +11,14 @@ class Bird {
 
     this.useBrain = controlType == "AI";
     if (controlType === "AI") {
-      this.brain = new NeuralNetwork(4, 6, 1);
+      this.brain = new NeuralNetwork(5, 10, 1);
     }
 
     this.dead = false;
     this.score = 0; // game score
     this.lifetime = 1;
     this.fitness = 0;
+    this.id = ID++;
   }
 
   static getXPos() {
@@ -65,15 +68,15 @@ class Bird {
   }
 
   think(closestPipe) {
-    let shouldFlap = this.brain.feedForward([
+    let inputs = [
       this.y / height,
       closestPipe.x / width,
       closestPipe.y_top / height,
       closestPipe.y_bottom / height,
-    ]);
+      this.vel / 15,
+    ];
 
-    // console.log(`should flap val`);
-    // console.log(shouldFlap);
+    let shouldFlap = this.brain.feedForward(inputs);
 
     if (shouldFlap[0] > 0.5) {
       this.flap();
