@@ -40,12 +40,14 @@ class Population {
 
   generateNewPop() {
     this.population = [];
-    for (let i = 0; i < this.maxPop; i++) {
+    for (let i = 0; i < this.maxPop - 1; i++) {
       let child = this.best.copy();
 
       child.mutate(this.mutationRate);
       this.population[i] = child;
     }
+
+    this.population.push(this.best.copy()); //have at least one identical copy of the best from previous gen
 
     this.numAlive = this.maxPop;
     this.generation++;

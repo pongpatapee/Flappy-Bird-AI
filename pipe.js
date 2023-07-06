@@ -3,7 +3,7 @@ class Pipe {
     this.x = x ? x : width + 50;
     this.gap = 150;
 
-    this.y_top = random(150, 300);
+    this.y_top = random(120, 320);
     // this.y_top = height / 2;
     this.y_bottom = this.y_top + this.gap;
 
